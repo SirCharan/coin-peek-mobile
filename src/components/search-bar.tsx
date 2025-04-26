@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
@@ -10,8 +10,8 @@ interface SearchBarProps {
 
 export default function SearchBar({ initialQuery = "" }: SearchBarProps) {
   const [query, setQuery] = useState(initialQuery);
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const currentQuery = searchParams.get("search") || "";
@@ -32,7 +32,7 @@ export default function SearchBar({ initialQuery = "" }: SearchBarProps) {
     // Reset to page 1 when searching
     params.set("page", "1");
     
-    router.push(`/?${params.toString()}`);
+    navigate(`/?${params.toString()}`);
   };
 
   return (

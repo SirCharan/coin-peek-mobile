@@ -15,8 +15,7 @@ export async function getCoins(
       `&price_change_percentage=${priceChangeTimeframe}` : "";
     
     const response = await fetch(
-      `${API_BASE_URL}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=${page}&sparkline=${sparkline}${includeParams}`,
-      { next: { revalidate: 300 } } // Cache data for 5 minutes
+      `${API_BASE_URL}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=${page}&sparkline=${sparkline}${includeParams}`
     );
 
     if (!response.ok) {
@@ -41,8 +40,7 @@ export async function searchCoins(
   try {
     // First get the coins that match the search query
     const response = await fetch(
-      `${API_BASE_URL}/search?query=${encodeURIComponent(query)}`,
-      { next: { revalidate: 300 } }
+      `${API_BASE_URL}/search?query=${encodeURIComponent(query)}`
     );
 
     if (!response.ok) {
@@ -58,8 +56,7 @@ export async function searchCoins(
 
     // Then get the market data for these coins
     const marketDataResponse = await fetch(
-      `${API_BASE_URL}/coins/markets?vs_currency=${currency}&ids=${coinIds}&order=market_cap_desc&sparkline=false&price_change_percentage=1y`,
-      { next: { revalidate: 300 } }
+      `${API_BASE_URL}/coins/markets?vs_currency=${currency}&ids=${coinIds}&order=market_cap_desc&sparkline=false&price_change_percentage=1y`
     );
 
     if (!marketDataResponse.ok) {
