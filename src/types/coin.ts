@@ -1,4 +1,3 @@
-
 export interface Coin {
   id: string;
   symbol: string;
@@ -41,4 +40,14 @@ export interface SortOption {
   value: string;
   label: string;
   direction: 'asc' | 'desc';
+}
+
+export interface ColumnVisibility {
+  price: boolean;
+  '24h': boolean;
+  '7d': boolean;
+  '30d': boolean;
+  '1y': boolean;
+  'ath': boolean;
+  'atl': boolean;
 }

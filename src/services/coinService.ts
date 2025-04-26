@@ -1,4 +1,3 @@
-
 import { Coin } from "@/types/coin";
 
 const API_BASE_URL = "https://api.coingecko.com/api/v3";
@@ -7,15 +6,11 @@ export async function getCoins(
   page = 1, 
   perPage = 20, 
   currency = "usd", 
-  sparkline = false, 
-  priceChangeTimeframe = "1y"
+  sparkline = false
 ): Promise<{ data: Coin[] | null; error: string | null }> {
   try {
-    const includeParams = priceChangeTimeframe ? 
-      `&price_change_percentage=${priceChangeTimeframe}` : "";
-    
     const response = await fetch(
-      `${API_BASE_URL}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=${page}&sparkline=${sparkline}${includeParams}`
+      `${API_BASE_URL}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=${perPage}&page=${page}&sparkline=${sparkline}&price_change_percentage=24h,7d,30d,1y`
     );
 
     if (!response.ok) {
@@ -38,7 +33,6 @@ export async function searchCoins(
   currency = "usd"
 ): Promise<{ data: Coin[] | null; error: string | null }> {
   try {
-    // First get the coins that match the search query
     const response = await fetch(
       `${API_BASE_URL}/search?query=${encodeURIComponent(query)}`
     );
@@ -54,9 +48,8 @@ export async function searchCoins(
       return { data: [], error: null };
     }
 
-    // Then get the market data for these coins
     const marketDataResponse = await fetch(
-      `${API_BASE_URL}/coins/markets?vs_currency=${currency}&ids=${coinIds}&order=market_cap_desc&sparkline=false&price_change_percentage=1y`
+      `${API_BASE_URL}/coins/markets?vs_currency=${currency}&ids=${coinIds}&order=market_cap_desc&sparkline=false&price_change_percentage=24h,7d,30d,1y`
     );
 
     if (!marketDataResponse.ok) {
